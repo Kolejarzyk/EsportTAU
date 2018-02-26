@@ -11,7 +11,11 @@ public class Match
     private String gameName;
 
 
-    public Match() {
-    
-}
+    public Match(String nameTeam1,String nameTeam2, int scoreTeam1, int scoreTeam2, int gameName) {
+        this.nameTeam1 = nameTeam1;
+        this.nameTeam2 = nameTeam2;
+        this.scoreTeam1 = scoreTeam1;
+        this.scoreTeam2 = scoreTeam2;
+        this.gameName = gameName;    
+    }
 }

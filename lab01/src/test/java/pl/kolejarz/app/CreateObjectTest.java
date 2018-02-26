@@ -8,9 +8,7 @@ public class CreateObjectTest
     @Test
     public void testCreateObject()
     {
-        Match match = new Match();
-
-        assertNotNull(match);
-        assertEquals(match, new Match());
+     Match match = new Match("Fnatic","VirtusPro",16,10,"CounterStrike");
+     assertNotNull(match);
     }
 }
