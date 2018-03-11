@@ -1,4 +1,4 @@
-package pl.kolejarz.app;
+package pl.kolejarz.domain;
 
 
 

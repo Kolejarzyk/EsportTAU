@@ -1,7 +1,8 @@
-package pl.kolejarz.app;
+package pl.kolejarz.test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import pl.kolejarz.domain.Match;
 
 public class CreateObjectTest
 {
