@@ -9,7 +9,14 @@ public class Player
     private String team;
     private String game;
 
+    public Player(){}
 
+    public Player(int id,String firstName, String nickName)
+    {
+        this.id = id;
+        this.firstName = firstName;
+        this.nickName = nickName;
+    }
     public void setId(int id)
     {
         this.id = id;
