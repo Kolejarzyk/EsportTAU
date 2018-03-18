@@ -9,12 +9,9 @@ import static org.junit.Assert.assertNotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.sun.tools.javac.util.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import jdk.internal.jline.internal.TestAccessible;
 import pl.kolejarz.domain.Player;
 import pl.kolejarz.repository.IPlayerRepository;
 import pl.kolejarz.repository.PlayerRepositoryFactory;
