@@ -3,9 +3,6 @@
 cd $(dirname $0)
 
 
-if [ ! -f hsqldb.jar ]; then
-    wget http://puzniakowski.pl/repo/libs/hsqldb.jar
-fi
 
 cd ..
 

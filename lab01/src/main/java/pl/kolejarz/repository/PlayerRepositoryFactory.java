@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.sun.rmi.rmid.ExecOptionPermission;
-
+	
 import pl.kolejarz.domain.Player;
 
 public class PlayerRepositoryFactory implements IPlayerRepository
