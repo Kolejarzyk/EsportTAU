@@ -78,6 +78,10 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 		this.connection = connection;
 		addPersonStmt = connection.prepareStatement("INSERT INTO Player(id,firstName,nickName) VALUES (?,?,?)");
 		getAllPersonStmt = connection.prepareStatement("SELECT id,firstName,NickName FROM Player");
+		getByIdStmt = connection.prepareStatement("SELECT * FROM Player WHERE id = ? ");	
+		updatePlaterStmt = connection.prepareStatement("UPDATE Player SET firstName= ?, nickName= ? WHERE id = ?");
+		deletPersonStmt = connection.prepareStatement("DELETE FROM Player WHERE id = ?");
+		getByNameStmt = connection.prepareStatement("SELECT * FROM Player WHERE nickName= ?");
 	}
 
 	@Override
@@ -124,7 +128,7 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 		Player p = new Player();
 		try
 		{
-			getByIdStmt = connection.prepareStatement("SELECT * FROM Player WHERE id = " + id);			
+			getByIdStmt.setLong(1, id);		
 			ResultSet rs = getByIdStmt.executeQuery();
 			while(rs.next())
 				{
@@ -146,7 +150,9 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 	
 		try
 		{
-			updatePlaterStmt = connection.prepareStatement("UPDATE Player SET firstName= '"+p.getFIrstName()+"', nickName= '"+p.getNickName()+"' WHERE id="+id);
+			updatePlaterStmt.setString(1, p.getFIrstName());
+			updatePlaterStmt.setString(2, p.getNickName());
+			updatePlaterStmt.setLong(3, id);
 			count = updatePlaterStmt.executeUpdate();
 		}
 		catch (SQLException e)
@@ -160,7 +166,7 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 	public void delete(long id) {
 		try
 		{
-			deletPersonStmt = connection.prepareStatement("DELETE FROM Player WHERE id = " + id);
+			deletPersonStmt.setLong(1, id);
 			deletPersonStmt.executeUpdate();
 		}catch(SQLException e)
 		{
@@ -173,7 +179,7 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 		Player player = new Player();
 		try
 		{
-			getByNameStmt = connection.prepareStatement("SELECT * FROM Player WHERE nickName= '" + name + "'");
+			getByNameStmt.setString(1, name);	
 			ResultSet rs = getByNameStmt.executeQuery();
 
 			while(rs.next())
