@@ -11,17 +11,23 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
+
 
 import pl.kolejarz.domain.Player;
 import pl.kolejarz.repository.IPlayerRepository;
 import pl.kolejarz.repository.PlayerRepositoryFactory;
 import static org.hamcrest.CoreMatchers.*;
 
+
+@Ignore
 public class PlayerRepositoryTest
 {
+
+
     IPlayerRepository playerRepository;
     
-
+   
     @Before
     public void initDatabase() throws SQLException
     {
