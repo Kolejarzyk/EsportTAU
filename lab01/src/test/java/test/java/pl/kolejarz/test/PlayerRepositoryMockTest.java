@@ -30,12 +30,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PlayerRepositoryMockTest
-{
+public class PlayerRepositoryMockTest {
 
     IPlayerRepository playerRepository;
-    
-    @Mock 
+
+    @Mock
     Connection connectionMock;
 
     @Mock
@@ -57,8 +56,7 @@ public class PlayerRepositoryMockTest
     PreparedStatement updatePlayerStatementMock;
 
     @Before
-    public void setupDatabase() throws SQLException
-    {
+    public void setupDatabase() throws SQLException {
         when(connectionMock.prepareStatement("INSERT INTO Player(id,firstName,nickName) VALUES (?,?,?)")).thenReturn(addStatementMock);
         when(connectionMock.prepareStatement("SELECT id,firstName,NickName FROM Player")).thenReturn(getAllStatementMock);
         when(connectionMock.prepareStatement("SELECT * FROM Player WHERE id = ? ")).thenReturn(getByIdStatementMock);
@@ -78,8 +76,7 @@ public class PlayerRepositoryMockTest
     }
 
     @Test
-    public void checkAdding() throws Exception
-    {
+    public void checkAdding() throws Exception {
         when(addStatementMock.executeUpdate()).thenReturn(1);
         Player wWojtas = new Player();
 
@@ -88,58 +85,39 @@ public class PlayerRepositoryMockTest
         wWojtas.setNickName("Taz");
 
         assertEquals(1, playerRepository.add(wWojtas));
-        verify(addStatementMock,times(1)).setInt(1, 2);
-        verify(addStatementMock,times(1)).setString(2,"Wiktor");
-        verify(addStatementMock,times(1)).setString(3,"Taz");
+        verify(addStatementMock, times(1)).setInt(1, 2);
+        verify(addStatementMock, times(1)).setString(2, "Wiktor");
+        verify(addStatementMock, times(1)).setString(3, "Taz");
         verify(addStatementMock).executeUpdate();
     }
 
     @Test
-    public void checkDeleting() throws SQLException
-    {
-        Player deletePlayer = new Player(1,"Wiktor","Taz");
-        List<Player> players = new ArrayList<Player>();
-        players.add(deletePlayer);
-
-        doNothing().doThrow(new IllegalStateException())
-                .when( this.playerRepository).delete(deletePlayer.getId());
-
-        when(this.playerRepository.getById(1)).thenReturn(deletePlayer);
-        when(this.playerRepository.getById(3).getFIrstName()).thenReturn("Pasha");
-        when(this.playerRepository.getAll()).thenReturn(players);
-        this.playerRepository.delete(deletePlayer.getId());
-        assertNull(playerRepository.getById(3).getFIrstName());
-        assertFalse(playerRepository.getAll().isEmpty());
+    public void checkDeleting() throws SQLException {
+        playerRepository.delete(1);
+        verify(deleteStatementMock).executeUpdate();
     }
 
-    abstract class AbstractResultSet implements ResultSet
-    {
+    abstract class AbstractResultSet implements ResultSet {
         int i = 0;
 
         @Override
-        public int getInt(String s) throws SQLException
-        {
+        public int getInt(String s) throws SQLException {
             return 1;
         }
 
         @Override
-        public String getString(String columnLabel1) throws SQLException
-        {
-            if (columnLabel1 == "nickName")
-            {
+        public String getString(String columnLabel1) throws SQLException {
+            if (columnLabel1 == "nickName") {
                 return "Taz";
-            }
-            else
-            {
+            } else {
                 return "Wiktor";
             }
         }
 
 
         @Override
-        public boolean next() throws SQLException
-        {
-            if( i == 1)
+        public boolean next() throws SQLException {
+            if (i == 1)
 
                 return false;
             i++;
@@ -148,55 +126,74 @@ public class PlayerRepositoryMockTest
     }
 
     @Test
-    public void checkUpdating() throws SQLException
-    {
-        Player updatePlayer = playerRepository.getById(1);
-        updatePlayer.setFirstName("Dominik");
-        playerRepository.update(updatePlayer, 1);
+    public void checkUpdating() throws SQLException {
+        when(updatePlayerStatementMock.executeUpdate()).thenReturn(1);
+        Player wWojtas = new Player();
 
-        when(playerRepository.update(updatePlayer,1)).thenReturn(1);
-        assertEquals("Dominik", playerRepository.getById(1).getFIrstName());
-        assertEquals("Jaroslaw", playerRepository.getById(2).getFIrstName());
-        assertEquals(1, playerRepository.update(updatePlayer, 1));
-        verify(updatePlayerStatementMock,times(1)).setString(1,"Dominik");
+        wWojtas.setId(1);
+        wWojtas.setFirstName("Jaroslaw");
+        wWojtas.setNickName("Taz");
+
+        assertEquals(1, playerRepository.update(wWojtas,1));
         verify(updatePlayerStatementMock).executeUpdate();
-
     }
 
 
     @Test
-    public void getByIdTest() throws SQLException
-    {}
-
-
-
-    @Test
-    public void getByName() throws SQLException
-    {
-        AbstractResultSet
-        Player player = playerRepository.getByNickName("Pasha");
-        assertThat(player.getFIrstName(), is("Jaroslaw"));
-        verify(getByNameStatementMock,times(1)).setString(1,"Jaroslaw");
-        verify(getByNameStatementMock).executeUpdate();
-    }
-
-    @Test
-    public void getAllTest() throws SQLException
-    {
+    public void getByIdTest() throws SQLException {
         AbstractResultSet mockedResutSet = mock(AbstractResultSet.class);
         when(mockedResutSet.next()).thenCallRealMethod();
         when(mockedResutSet.getInt("id")).thenCallRealMethod();
         when(mockedResutSet.getString("firstName")).thenCallRealMethod();
         when(mockedResutSet.getString("nickName")).thenCallRealMethod();
-        when(getAllStatementMock.executeQuery()).thenReturn(mockedResutSet);
+        when(getByIdStatementMock.executeQuery()).thenReturn(mockedResutSet);
 
-        assertEquals(1, playerRepository.getAll().size());
+        assertEquals(1, playerRepository.getById(1).getId());
 
-        verify(getAllStatementMock, times(1)).executeQuery();
+        verify(getByIdStatementMock, times(1)).executeQuery();
         verify(mockedResutSet, times(1)).getInt("id");
         verify(mockedResutSet, times(1)).getString("nickName");
         verify(mockedResutSet, times(1)).getString("firstName");
         verify(mockedResutSet, times(2)).next();
+    }
+
+
+    @Test
+    public void getByName() throws SQLException {
+
+        AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
+        when(mockedResultSet.next()).thenCallRealMethod();
+        when(mockedResultSet.getInt("id")).thenCallRealMethod();
+        when(mockedResultSet.getString("firstName")).thenCallRealMethod();
+        when(mockedResultSet.getString("nickName")).thenCallRealMethod();
+        when(getByNameStatementMock.executeQuery()).thenReturn(mockedResultSet);
+
+        assertEquals("Taz", playerRepository.getByNickName("Taz").getNickName());
+
+
+        verify(getByNameStatementMock, times(1)).executeQuery();
+        verify(mockedResultSet, times(1)).getInt("id");
+        verify(mockedResultSet, times(1)).getString("nickName");
+        verify(mockedResultSet, times(1)).getString("firstName");
+        verify(mockedResultSet, times(2)).next();
+    }
+
+    @Test
+    public void getAllTest() throws SQLException {
+        AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
+        when(mockedResultSet.next()).thenCallRealMethod();
+        when(mockedResultSet.getInt("id")).thenCallRealMethod();
+        when(mockedResultSet.getString("firstName")).thenCallRealMethod();
+        when(mockedResultSet.getString("nickName")).thenCallRealMethod();
+        when(getAllStatementMock.executeQuery()).thenReturn(mockedResultSet);
+
+        assertEquals(1, playerRepository.getAll().size());
+
+        verify(getAllStatementMock, times(1)).executeQuery();
+        verify(mockedResultSet, times(1)).getInt("id");
+        verify(mockedResultSet, times(1)).getString("nickName");
+        verify(mockedResultSet, times(1)).getString("firstName");
+        verify(mockedResultSet, times(2)).next();
     }
 
 }
