@@ -13,6 +13,6 @@ public interface IPlayerRepository
      Player getById(long id) throws SQLException;
      Player getByNickName(String name);
      int update(Player p, long id) throws SQLException;
-     void delete(long id);
+     int delete(long id);
      void setConnection(Connection connection) throws SQLException;
 }

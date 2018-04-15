@@ -22,6 +22,7 @@ import pl.kolejarz.repository.IPlayerRepository;
 import pl.kolejarz.repository.PlayerRepositoryFactory;
 import org.junit.runner.RunWith;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -29,6 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 
+@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerRepositoryMockTest {
 

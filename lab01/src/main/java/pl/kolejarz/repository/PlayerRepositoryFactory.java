@@ -1,16 +1,18 @@
 package pl.kolejarz.repository;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 
-	
 import pl.kolejarz.domain.Player;
 
+@Component
 public class PlayerRepositoryFactory implements IPlayerRepository
 {
 
@@ -32,7 +34,13 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 	 setConnection(connection);
 	}
 
-	public PlayerRepositoryFactory() {
+	public PlayerRepositoryFactory() throws SQLException{
+		this.connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+		if(!isDatabaseReady())
+		{
+			createTables();
+		}
+		this.setConnection(this.connection);
 	}
 
 	public void createTables() throws SQLException
@@ -162,15 +170,17 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 	}
 
 	@Override
-	public void delete(long id) {
+	public int delete(long id) {
+		int count = 0;
 		try
 		{
 			deletPersonStmt.setLong(1, id);
-			deletPersonStmt.executeUpdate();
+			count = deletPersonStmt.executeUpdate();
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
+		return count;
 	}
 
 	@Override
