@@ -26,21 +26,16 @@ public class PlayerRepositoryFactory implements IPlayerRepository
 	private PreparedStatement updatePlaterStmt;
 
 	public PlayerRepositoryFactory(Connection connection) throws SQLException {
-	this.connection = connection;
-	 if(!isDatabaseReady())
-	 {
-		 createTables();
-	 }
-	 setConnection(connection);
-	}
-
-	public PlayerRepositoryFactory() throws SQLException{
 		this.connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
 		if(!isDatabaseReady())
 		{
 			createTables();
 		}
 		this.setConnection(this.connection);
+	}
+
+	public PlayerRepositoryFactory() throws SQLException{
+	
 	}
 
 	public void createTables() throws SQLException

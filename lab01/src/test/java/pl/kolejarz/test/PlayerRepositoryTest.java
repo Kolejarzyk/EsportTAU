@@ -20,7 +20,7 @@ import pl.kolejarz.repository.PlayerRepositoryFactory;
 import static org.hamcrest.CoreMatchers.*;
 
 
-
+@Ignore
 public class PlayerRepositoryTest
 {
 

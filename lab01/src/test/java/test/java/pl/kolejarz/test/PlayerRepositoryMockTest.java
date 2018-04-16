@@ -11,10 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
 
 
 import pl.kolejarz.domain.Player;
@@ -22,7 +18,6 @@ import pl.kolejarz.repository.IPlayerRepository;
 import pl.kolejarz.repository.PlayerRepositoryFactory;
 import org.junit.runner.RunWith;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -30,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 
-@Ignore
+
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerRepositoryMockTest {
 
@@ -95,7 +90,9 @@ public class PlayerRepositoryMockTest {
 
     @Test
     public void checkDeleting() throws SQLException {
-        playerRepository.delete(1);
+        when(deleteStatementMock.executeUpdate()).thenReturn(1);
+        assertEquals(1, playerRepository.delete(1));
+        verify(deleteStatementMock,times(1)).setLong(1, 1);
         verify(deleteStatementMock).executeUpdate();
     }
 
