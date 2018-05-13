@@ -1,9 +1,12 @@
 package pl.kolejarz.test;
 
 import static org.junit.Assert.*;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import pl.kolejarz.domain.Match;
 
+@Ignore
 public class CreateObjectTest
 {
     @Test
