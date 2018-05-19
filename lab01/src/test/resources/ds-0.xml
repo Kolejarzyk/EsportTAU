@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<dataset>
+    <PLAYER ID="1" FIRSTNAME="Filip" NICKNAME="Neo"/>
+    <PLAYER ID="2" FIRSTNAME="Jaroslaw" NICKNAME="Pasza"/>
+    <PLAYER ID="3" FIRSTNAME="Wiktor" NICKNAME="Taz"/>
+</dataset>

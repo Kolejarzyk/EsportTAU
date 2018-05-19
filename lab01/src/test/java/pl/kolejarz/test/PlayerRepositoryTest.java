@@ -9,14 +9,15 @@ import static org.junit.Assert.assertNotNull;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 
 
 import pl.kolejarz.domain.Player;
 import pl.kolejarz.repository.IPlayerRepository;
-import pl.kolejarz.repository.PlayerRepositoryFactory;
+import pl.kolejarz.repository.PlayerRepositoryImpl;
+
 import static org.hamcrest.CoreMatchers.*;
 
 
@@ -25,14 +26,16 @@ public class PlayerRepositoryTest
 {
 
 
-    IPlayerRepository playerRepository;
+    public static IPlayerRepository playerRepository;
     
    
-    @Before
-    public void initDatabase() throws SQLException
+
+    @BeforeClass
+    public static void initDatabase() throws SQLException
     {
+
         String url = "jdbc:hsqldb:hsql://localhost/workdb";
-        playerRepository = new PlayerRepositoryFactory(DriverManager.getConnection(url));
+        playerRepository = new PlayerRepositoryImpl(DriverManager.getConnection(url));
         Player fNeo = new Player();
         fNeo.setId(1);
         fNeo.setFirstName("Filip");
@@ -52,6 +55,7 @@ public class PlayerRepositoryTest
      
     }
 
+
     
     @Test
     public void addPlayerTest() throws SQLException
@@ -62,25 +66,25 @@ public class PlayerRepositoryTest
         wWojtas.setFirstName("Wiktor");
         wWojtas.setNickName("Taz");
         playerRepository.add(wWojtas);
-       assertEquals(wWojtas.getNickName(), playerRepository.getById(4).getNickName());
+       assertEquals(wWojtas.getNickName(), playerRepository.getById(3).getNickName());
     }
 
     @Test
     public void updatePlayerTest() throws SQLException
     {
-        Player updatePlayer = playerRepository.getById(1);
+        Player updatePlayer = playerRepository.getById(0);
         updatePlayer.setFirstName("Dominik");
-        playerRepository.update(updatePlayer, 1);
+        playerRepository.update(updatePlayer, 0);
 
-        assertEquals("Dominik", playerRepository.getById(1).getFIrstName());
-        assertEquals("Jaroslaw", playerRepository.getById(2).getFIrstName());
+        assertEquals("Dominik", playerRepository.getById(0).getFIrstName());
+        assertEquals("Jaroslaw", playerRepository.getById(1).getFIrstName());
     }
 
     @Test
     public void deletePlayerTest() throws SQLException
     {
         playerRepository.delete(3);
-        assertNull(playerRepository.getById(3).getFIrstName());
+        assertNull(playerRepository.getById(4).getFIrstName());
         assertFalse(playerRepository.getAll().isEmpty());
     }
 
@@ -102,4 +106,10 @@ public class PlayerRepositoryTest
     {
         assertNotNull(playerRepository.getAll());
     }
+
+    // @AfterClass
+    // public static void DropTable() throws SQLException
+    // {
+    //     playerRepository.dropDB();
+    // }
 } 

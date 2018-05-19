@@ -1,10 +1,10 @@
 package pl.kolejarz.web;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.kolejarz.domain.Player;
 import pl.kolejarz.repository.IPlayerRepository;
+import pl.kolejarz.repository.PlayerRepositoryImpl;
 
 @RestController
 public class PlayerApi
@@ -26,9 +26,26 @@ public class PlayerApi
     IPlayerRepository playerRepository;
 
     @RequestMapping("/")
-    public String index()
-    {
-        return "This is not rest, just checking if everything works";
+    public void index() throws SQLException
+    {                                                  
+        String url = "jdbc:hsqldb:hsql://localhost/workdb";
+        playerRepository = new PlayerRepositoryImpl(DriverManager.getConnection(url));
+        Player fNeo = new Player();
+        fNeo.setId(1);
+        fNeo.setFirstName("Filip");
+        fNeo.setNickName("Neo");
+        Player jJarzabkowski = new Player();
+        jJarzabkowski.setId(2);
+        jJarzabkowski.setFirstName("Jaroslaw");
+        jJarzabkowski.setNickName("Pasha");
+        Player fPionka = new Player();
+        fPionka.setId(3);
+        fPionka.setFirstName("Filip");
+        fPionka.setNickName("Pionas");
+         
+        playerRepository.add(fNeo);
+        playerRepository.add(jJarzabkowski);
+        playerRepository.add(fPionka);
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST,
