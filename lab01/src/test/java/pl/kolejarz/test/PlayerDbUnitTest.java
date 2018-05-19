@@ -63,38 +63,47 @@ public class PlayerDbUnitTest extends DBTestCase
         IDataSet expectedDataSet = getDataSet("ds-1.xml");
         ITable expectedTable = expectedDataSet.getTable("PLAYER");
         Assertion.assertEquals(expectedTable, filteredTable);
-        playerRepository.delete(3);
-        getTearDownOperation();
+
+        int id = playerRepository.getByNickName("Seized").getId();
+        playerRepository.delete(id);
     }
 
-    // @Test
-    // public void checkUpdating() throws Exception
-    // {
-    //     Player player = playerRepository.getById(1);
-    //     player.setFirstName("Jakub");
+    @Test
+     public void checkUpdating() throws Exception
+     {
+         Player player = playerRepository.getById(1);
+         player.setFirstName("Jakub");
 
-    //     assertEquals(1, playerRepository.update(player,1));
+         assertEquals(1, playerRepository.update(player,1));
 
-    //     IDataSet dbDataSet = this.getConnection().createDataSet();
-    //     ITable actuaTable = dbDataSet.getTable("PLAYER");
-    //     ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(actuaTable, new String[] {"ID,nickName"});
-    //     IDataSet expectedDataSet = getDataSet();
-    //     ITable expectedTable = expectedDataSet.getTable("PLAYER");
-    //     Assertion.assertEquals(expectedTable, filteredTable);
-    // }
+         IDataSet dbDataSet = this.getConnection().createDataSet();
+         ITable actuaTable = dbDataSet.getTable("PLAYER");
+         ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(actuaTable, new String[] {"ID"});
+         IDataSet expectedDataSet = getDataSet("ds-2.xml");
+         ITable expectedTable = expectedDataSet.getTable("PLAYER");
+         Assertion.assertEquals(expectedTable, filteredTable);
+     }
 
-    // @Test
-    // public void checkDeleting() throws Exception
-    // {
-    //     assertEquals(1, playerRepository.delete(2));
+     @Test
+     public void checkDeleting() throws Exception
+     {
+         assertEquals(1, playerRepository.delete(2));
+         IDataSet dbDataSet = this.getConnection().createDataSet();
+         ITable actuaTable = dbDataSet.getTable("PLAYER");
+         ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(actuaTable, new String[] {"ID"});
+         IDataSet expectedDataSet = getDataSet("ds-3.xml");
+         ITable expectedTable = expectedDataSet.getTable("PLAYER");
+         Assertion.assertEquals(expectedTable, filteredTable);
+     }
 
-    //     IDataSet dbDataSet = this.getConnection().createDataSet();
-    //     ITable actuaTable = dbDataSet.getTable("PLAYER");
-    //     ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(actuaTable, new String[] {"ID"});
-    //     IDataSet expectedDataSet = getDataSet("ds-1.xml");
-    //     ITable expectedTable = expectedDataSet.getTable("PLAYER");
-    //     Assertion.assertEquals(expectedTable, filteredTable);
-    // }
+
+     @Test
+     public void checkGet() throws Exception
+     {
+         Player player = playerRepository.getById(1);
+         assertEquals("Filip", player.getFIrstName());
+     }
+
     @Override
     protected DatabaseOperation getSetUpOperation() throws Exception
     {

@@ -14,36 +14,36 @@ import org.junit.runners.Suite;
 
 import pl.kolejarz.repository.PlayerRepositoryImpl;
 
+
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    PlayerDbUnitTest.class
+        PlayerDbUnitTest.class
 })
-public class PlayerTests
-{
+public class PlayerTests {
+
     @BeforeClass
-    public static void before() throws Exception
-    {
-        String url = "jdbc:hsqldb:hsql://localhost/workdb";
+    public static void before() throws Exception {
+          String url = "jdbc:hsqldb:hsql://localhost/workdb";
 
         new PlayerRepositoryImpl(DriverManager.getConnection(url));
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,"org.hsqldb.jdbc.JDBCDriver");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,"jdbc:hsqldb:hsql://localhost/workdb");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "SA");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "");
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "org.hsqldb.jdbcDriver" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:hsqldb:hsql://localhost/workdb" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "sa" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "" );
 
         JdbcDatabaseTester databaseTester = new PropertiesBasedJdbcDatabaseTester();
 
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(PlayerTests.class.getClassLoader().getResource("ds-0.xml").openStream());
+        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(
+            PlayerTests.class.getClassLoader().
+                        getResource("ds-0.xml").openStream());
 
-        databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
-        databaseTester.setDataSet(dataSet);
-        databaseTester.onSetup();
+        //databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
+      //  databaseTester.setDataSet(dataSet);
+        // databaseTester.onSetup();
     }
 
     @AfterClass
-    public static void after()
-    {
-
+    public static void after() {
     }
 
 }

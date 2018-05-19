@@ -1,4 +1,4 @@
-package test.java.pl.kolejarz.test;
+package pl.kolejarz.test;
 
 
 import static org.junit.Assert.assertEquals;
