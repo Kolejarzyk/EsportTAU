@@ -1,0 +1,28 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "selenium",
+                "projectName": "selenium",
+                "workingDirectory": "/home/kolejarz/Documents/Project/EsportTAU/lab12/selenium",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "selenium",
+                "projectName": "selenium",
+                "workingDirectory": "/home/kolejarz/Documents/Project/EsportTAU/lab12/selenium",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
